@@ -15,4 +15,5 @@ Best F1-score:
 |----:|:----------:|
 | Pelageya (teamlead) | @polyanka003 |
 | Siin |  @snmardi |
-| Maria |  |
+| Maria | @kheydelberg |
+
