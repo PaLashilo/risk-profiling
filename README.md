@@ -1,5 +1,5 @@
 # risk-profiling
-prediction a risk rating to the investor (1-5 score)
+prediction a risk rating of investors (1-5 score)
 
 making custom embeddings + dataset transformation + training and evaluation catboost model
 
