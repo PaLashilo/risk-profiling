@@ -1,7 +1,12 @@
 Data*
 venv*
 
-./main/__pycache__*
-./main/__MACOSX
-./main/.ipynb*
-./main/catboost_info*
+src/__pycache__*
+src/__MACOSX
+src/.ipynb*
+src/catboost_info*
+
+main/__pycache__*
+main/__MACOSX
+main/.ipynb*
+main/catboost_info*
