@@ -4,7 +4,7 @@ import numpy as np
 
 
 def format_account_condition(id: int, mode: str) -> str or None:
-    path = f'./Data/{mode}/{mode}_additional_info/id_{id}/account_condition_{id}.csv'
+    path = f'../Data/data/{mode}/{mode}_additional_info/id_{id}/account_condition_{id}.csv'
     try:
         account_condition = pd.read_csv(path, sep=';', index_col=0)
     except FileNotFoundError:
@@ -32,7 +32,7 @@ def format_account_condition(id: int, mode: str) -> str or None:
 
 
 def format_reference_point(id: int, mode: str) -> str or None:
-    path = f'./Data/{mode}/{mode}_additional_info/id_{id}/reference_point_{id}.csv'
+    path = f'../Data/data/{mode}/{mode}_additional_info/id_{id}/reference_point_{id}.csv'
     try:
         reference_point = pd.read_csv(path, sep=';', index_col=0)
     except FileNotFoundError:
@@ -58,7 +58,7 @@ def format_reference_point(id: int, mode: str) -> str or None:
 
 
 def format_deals(id: int, market: int, mode: str) -> str or None:
-    path = f'./Data/{mode}/{mode}_deals/{market}_{id}.csv'
+    path = f'../Data/data/{mode}/{mode}_deals/{market}_{id}.csv'
     try:
         deals = pd.read_csv(path, names=["datetime", "ticker", "quantity", "summ"], sep=';')
     except FileNotFoundError:
@@ -76,7 +76,7 @@ def format_deals(id: int, market: int, mode: str) -> str or None:
     return None
 
 def format_main(mode: str, index_col: bool) -> None:
-    path = f'./Data/{mode}/{mode}.csv'
+    path = f'../Data/data/{mode}/{mode}.csv'
     main = pd.read_csv(path, sep=',')
     for clmn in ['start_sum', 'income_rub', 'income_percent']:
         main[clmn] = main[clmn].astype(str)

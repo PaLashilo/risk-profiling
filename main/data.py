@@ -5,12 +5,12 @@ def additional_data_to_dict(mode: str, main_df: pd.DataFrame) -> dict:
     data = dict()
     ids = main_df.id
     for id in ids:
-        acc_conf = f'data/{mode}/{mode}_additional_info/id_{id}/account_condition_{id}.csv'
-        ref_point = f'data/{mode}/{mode}_additional_info/id_{id}/reference_point_{id}.csv'
-        stat_table = f'data/{mode}/{mode}_additional_info/id_{id}/stats_table_{id}.csv'
-        deals_1 = f'data/{mode}/{mode}_deals/1_{id}.csv'
-        deals_2 = f'data/{mode}/{mode}_deals/2_{id}.csv'
-        deals_3 = f'data/{mode}/{mode}_deals/3_{id}.csv'
+        acc_conf = f'../Data/data/{mode}/{mode}_additional_info/id_{id}/account_condition_{id}.csv'
+        ref_point = f'../Data/data/{mode}/{mode}_additional_info/id_{id}/reference_point_{id}.csv'
+        stat_table = f'../Data/data/{mode}/{mode}_additional_info/id_{id}/stats_table_{id}.csv'
+        deals_1 = f'../Data/data/{mode}/{mode}_deals/1_{id}.csv'
+        deals_2 = f'../Data/data/{mode}/{mode}_deals/2_{id}.csv'
+        deals_3 = f'../Data/data/{mode}/{mode}_deals/3_{id}.csv'
         data[id] = {
                   'account_condition': pd.read_csv(acc_conf) if os.path.exists(acc_conf) else None, 
                   'reference_point': pd.read_csv(ref_point) if os.path.exists(ref_point) else None, 
