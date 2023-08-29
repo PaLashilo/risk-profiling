@@ -14,7 +14,7 @@ def norm_border(dlen):
     return -np.exp(1)**(-0.03*dlen+1) + 2.6
 
 
-def concat_deals(data, dataset, norm_parameter):
+def concat_deals(data, dataset, norm_parameter, use_flex):
     deals = pd.DataFrame([])
     for id in dataset.id:
         table = data[id]['deals']
@@ -23,8 +23,11 @@ def concat_deals(data, dataset, norm_parameter):
             vec = making_vector(data[id]['deals'])
             if len(vec) > 1:
                 # нормализуем вектор (множитель - гиперпараметр)
-                # vec = ((vec - min(vec))/(max(vec)-min(vec))-0.5) * norm_parameter
-                vec = ((vec - min(vec))/(max(vec)-min(vec))-0.5) * norm_border(len(table))
+                if use_flex:
+                    vec = ((vec - min(vec))/(max(vec)-min(vec))-0.5) * norm_border(len(table))
+                else:
+                    vec = ((vec - min(vec))/(max(vec)-min(vec))-0.5) * norm_parameter
+
 
             table['rclass'] = dataset[dataset.id == id]['class'].values + vec
 

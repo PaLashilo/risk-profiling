@@ -50,7 +50,7 @@ def making_vector(table):
     return vector
 
 
-def adding_embeddings(dataset, data, fix_size=5):
+def adding_embeddings(dataset, data, fix_size=5, met = "sort_dist"):
     '''
     adding embedding of additional tables to main dataframe
 
@@ -69,7 +69,10 @@ def adding_embeddings(dataset, data, fix_size=5):
             vec = making_vector(table)
 
             # embs
-            emb = sort_dist_embedding(vec, fix_size)
+            if met=="random": emb = random_embedding(vec, fix_size)
+            elif met=="sort_dist": emb = sort_dist_embedding(vec, fix_size)
+            elif met=="distribution_discr": emb = distribution_discription_embedding(vec, fix_size)
+            elif met=="approximation": emb = approximation_embedding(vec, fix_size)
 
             # adding emb to dataset
             dataset.loc[dataset.id == id, "emb0":f"emb{fix_size-1}"] = emb
