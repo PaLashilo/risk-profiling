@@ -1,16 +1,8 @@
 from catboost import CatBoostClassifier
 from catboost import CatBoostRegressor
 from sklearn.model_selection import RandomizedSearchCV
-import toml
 
-config = toml.load("config.toml")
-random_iter = config["train_model"]["random_iteration"]
-iterations = config["train_model"]["iterations"]
-learning_rate = config["train_model"]["learning_rate"]
-datph = config["train_model"]["depth"]
-l2_leaf_reg = config["train_model"]["l2_leaf_reg"]
-
-def model_training(X_train, y_train, with_deals = 0):
+def model_training(X_train, y_train, param_grid, random_iter, with_deals = 0):
     # cat_columns = X_train.select_dtypes(include=['object']).columns
 
     if with_deals: 
@@ -19,12 +11,7 @@ def model_training(X_train, y_train, with_deals = 0):
     else: 
         model = CatBoostClassifier(verbose=0, loss_function='MultiClass')
         score = 'f1_macro'
-
-    param_grid = {'iterations': iterations,
-        'learning_rate': learning_rate,
-        'depth': datph,
-        "l2_leaf_reg": l2_leaf_reg}
-
+    
     grid_search = RandomizedSearchCV(estimator=model, 
                                     param_distributions=param_grid, 
                                     cv=5, 
