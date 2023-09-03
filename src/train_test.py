@@ -50,15 +50,15 @@ def droping_col(dataset):
     return dataset.drop(["class", "rclass"], 1)
 
 
-def split_with_deals(data, train, norm_parameter, train_size):
+def split_with_deals(data, train, flex, norm_parameter, train_size):
     # делим на train и test
     X = train.drop(columns=["nickname"])
     y = train["class"]
     X_train, X_test, y_train1, y_test = train_test_split(X, y, random_state=42, train_size=train_size)
 
     # добавляем сделки в датасет
-    X_train = concat_deals(data, X_train, norm_parameter)
-    X_test = concat_deals(data, X_test, norm_parameter)
+    X_train = concat_deals(data, X_train, norm_parameter, flex)
+    X_test = concat_deals(data, X_test, norm_parameter, flex)
 
     y_train = X_train.rclass
 
@@ -69,9 +69,9 @@ def split_with_deals(data, train, norm_parameter, train_size):
     return X_train, X_test, y_train, y_test
 
 
-def my_train_test_split(data, train, train_size=0.75, with_deals=0, norm_par=1):
+def my_train_test_split(data, train, use_flex, train_size=0.75, with_deals=0, norm_par=1):
     if with_deals:
-        X_train, X_test, y_train, y_test = split_with_deals(data, train, norm_par, train_size)
+        X_train, X_test, y_train, y_test = split_with_deals(data, train, use_flex, norm_par, train_size)
     else:
         X = train.drop(columns=["class", "nickname", "id"])
         y = train["class"]
