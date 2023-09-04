@@ -18,19 +18,21 @@ def sort_dist_embedding(vec, fix_size):
     returns: emb - fix_size embedding
     '''
 
-    emb = [sorted(vec)[i*(len(vec)//(fix_size-1)) if i != fix_size-1 else -1] for i in range(fix_size)]
+    emb = [sorted(vec)[i*(len(vec)//(fix_size-1)) if i !=
+                       fix_size-1 else -1] for i in range(fix_size)]
     return emb
 
 
 def distribution_discription_embedding(vec):
-    emb = [np.mean(vec), np.std(vec), pd.Series(vec).skew(), pd.Series(vec).kurt()]
+    emb = [np.mean(vec), np.std(vec), pd.Series(
+        vec).skew(), pd.Series(vec).kurt()]
     return emb
 
 
 def approximation_embedding(vec, fix_size):
     emb = [np.mean(sorted(vec)[(i-1)*(len(vec)//(fix_size-1)): (i*(len(vec)//(fix_size-1))
                                                                 if i != fix_size-1 else -1)])
-                                                                for i in range(1, fix_size+1)]
+           for i in range(1, fix_size+1)]
 
     emb = [i if not np.isnan(i) else 0 for i in emb]
     return emb
@@ -50,7 +52,7 @@ def making_vector(table):
     return vector
 
 
-def adding_embeddings(dataset, data, fix_size=5, met = "sort_dist"):
+def adding_embeddings(dataset, data, fix_size=5, met="sort_dist"):
     '''
     adding embedding of additional tables to main dataframe
 
@@ -69,10 +71,14 @@ def adding_embeddings(dataset, data, fix_size=5, met = "sort_dist"):
             vec = making_vector(table)
 
             # embs
-            if met=="random": emb = random_embedding(vec, fix_size)
-            elif met=="sort_dist": emb = sort_dist_embedding(vec, fix_size)
-            elif met=="distribution_discr": emb = distribution_discription_embedding(vec, fix_size)
-            elif met=="approximation": emb = approximation_embedding(vec, fix_size)
+            if met == "random":
+                emb = random_embedding(vec, fix_size)
+            elif met == "sort_dist":
+                emb = sort_dist_embedding(vec, fix_size)
+            elif met == "distribution_discr":
+                emb = distribution_discription_embedding(vec, fix_size)
+            elif met == "approximation":
+                emb = approximation_embedding(vec, fix_size)
 
             # adding emb to dataset
             dataset.loc[dataset.id == id, "emb0":f"emb{fix_size-1}"] = emb

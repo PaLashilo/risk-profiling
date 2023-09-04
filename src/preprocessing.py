@@ -13,10 +13,14 @@ def format_account_condition(id: int, mode: str) -> str or None:
         delt_name = f'{clmn}_delt'
         account_condition[clmn].loc[account_condition[clmn] == '-'] = np.nan
         if account_condition[clmn].isna().sum() != account_condition.shape[0]:
-            account_condition[[clmn, delt_name]] = account_condition[clmn].str.split('(', expand=True)
-            account_condition[delt_name] = account_condition[delt_name].str.replace(')', '')
-            account_condition[delt_name] = account_condition[delt_name].str.replace('+', '')
-            account_condition[delt_name].loc[account_condition[delt_name] == '-'] = np.nan
+            account_condition[[clmn, delt_name]] = account_condition[clmn].str.split(
+                '(', expand=True)
+            account_condition[delt_name] = account_condition[delt_name].str.replace(
+                ')', '')
+            account_condition[delt_name] = account_condition[delt_name].str.replace(
+                '+', '')
+            account_condition[delt_name].loc[account_condition[delt_name]
+                                             == '-'] = np.nan
         else:
             account_condition[delt_name] = np.nan
     astypes = {'start_sum': 'float',
@@ -41,10 +45,14 @@ def format_reference_point(id: int, mode: str) -> str or None:
         reference_point[clmn].loc[reference_point[clmn] == '-'] = np.nan
     new_clmn = 'open_positions_delt'
     if reference_point['open_positions'].isna().sum() != reference_point.shape[0]:
-        reference_point[['open_positions', new_clmn]] = reference_point['open_positions'].str.split('(', expand=True)
-        reference_point[new_clmn] = reference_point[new_clmn].str.replace(')', '')
-        reference_point[new_clmn] = reference_point[new_clmn].str.replace('+', '')
-        reference_point[new_clmn].loc[reference_point[new_clmn] == '-'] = np.nan
+        reference_point[['open_positions', new_clmn]
+                        ] = reference_point['open_positions'].str.split('(', expand=True)
+        reference_point[new_clmn] = reference_point[new_clmn].str.replace(
+            ')', '')
+        reference_point[new_clmn] = reference_point[new_clmn].str.replace(
+            '+', '')
+        reference_point[new_clmn].loc[reference_point[new_clmn]
+                                      == '-'] = np.nan
     else:
         reference_point[new_clmn] = np.nan
     astypes = {'open_positions': 'float',
@@ -60,20 +68,23 @@ def format_reference_point(id: int, mode: str) -> str or None:
 def format_deals(id: int, market: int, mode: str) -> str or None:
     path = f'../Data/data/{mode}/{mode}_deals/{market}_{id}.csv'
     try:
-        deals = pd.read_csv(path, names=["datetime", "ticker", "quantity", "summ"], sep=';')
+        deals = pd.read_csv(
+            path, names=["datetime", "ticker", "quantity", "summ"], sep=';')
     except FileNotFoundError:
         return 'No deals data file for ID: {market}_{id}'
     for ticker in deals['ticker'].unique():
         search_value = ticker
         first_occurrence = deals[deals['ticker'] == search_value].iloc[0]
         last_occurrence = deals[deals['ticker'] == search_value].iloc[-1]
-        start_price = abs(first_occurrence['summ']/first_occurrence['quantity'])
+        start_price = abs(
+            first_occurrence['summ']/first_occurrence['quantity'])
         final_price = abs(last_occurrence['summ']/last_occurrence['quantity'])
         volatility = ((final_price - start_price))/(start_price+0.001) * 100
         deals.replace(ticker, volatility, inplace=True)
     os.remove(path)
     deals.to_csv(path)
     return None
+
 
 def format_main(mode: str, index_col: bool) -> None:
     path = f'../Data/data/{mode}/{mode}.csv'
@@ -84,7 +95,9 @@ def format_main(mode: str, index_col: bool) -> None:
         # main[clmn] = pd.Series(main[clmn]).astype('str').replace(',', '.').astype('int')
         # main[clmn] = pd.Series(main[clmn]).astype('str').replace(' ', '').astype('int')
     main['income_percent'].loc[main['income_percent'] == '-'] = np.nan
-    main = main.astype({'start_sum': 'float', 'income_rub': 'float', 'income_percent': 'float'})
-    main['income_percent'] = main['income_percent'].fillna(main.income_rub.astype('int')/main.start_sum.astype('int'))
+    main = main.astype(
+        {'start_sum': 'float', 'income_rub': 'float', 'income_percent': 'float'})
+    main['income_percent'] = main['income_percent'].fillna(
+        main.income_rub.astype('int')/main.start_sum.astype('int'))
     os.remove(path)
     main.to_csv(path, index=index_col)

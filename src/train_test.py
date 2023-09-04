@@ -24,10 +24,11 @@ def concat_deals(data, dataset, norm_parameter, use_flex):
             if len(vec) > 1:
                 # нормализуем вектор (множитель - гиперпараметр)
                 if use_flex:
-                    vec = ((vec - min(vec))/(max(vec)-min(vec))-0.5) * norm_border(len(table))
+                    vec = ((vec - min(vec))/(max(vec)-min(vec))-0.5) * \
+                        norm_border(len(table))
                 else:
-                    vec = ((vec - min(vec))/(max(vec)-min(vec))-0.5) * norm_parameter
-
+                    vec = ((vec - min(vec))/(max(vec)-min(vec))-0.5) * \
+                        norm_parameter
 
             table['rclass'] = dataset[dataset.id == id]['class'].values + vec
 
@@ -40,7 +41,8 @@ def concat_deals(data, dataset, norm_parameter, use_flex):
             deals.loc[deals.shape[0]] = [datetime.strptime(
                 "2022-09-22 14:40:00.000", '%Y-%m-%d %H:%M:%S.%f'), 0, 0, 0, id, *dataset[dataset.id == id]['class'].values]
 
-    dataset = pd.merge(deals, dataset, on='id')  # мерджим датасет со сделками по id
+    # мерджим датасет со сделками по id
+    dataset = pd.merge(deals, dataset, on='id')
     return dataset
 
 
@@ -54,7 +56,8 @@ def split_with_deals(data, train, flex, norm_parameter, train_size):
     # делим на train и test
     X = train.drop(columns=["nickname"])
     y = train["class"]
-    X_train, X_test, y_train1, y_test = train_test_split(X, y, random_state=42, train_size=train_size)
+    X_train, X_test, y_train1, y_test = train_test_split(
+        X, y, random_state=42, train_size=train_size)
 
     # добавляем сделки в датасет
     X_train = concat_deals(data, X_train, norm_parameter, flex)
@@ -71,10 +74,12 @@ def split_with_deals(data, train, flex, norm_parameter, train_size):
 
 def my_train_test_split(data, train, use_flex, train_size=0.75, with_deals=0, norm_par=1):
     if with_deals:
-        X_train, X_test, y_train, y_test = split_with_deals(data, train, use_flex, norm_par, train_size)
+        X_train, X_test, y_train, y_test = split_with_deals(
+            data, train, use_flex, norm_par, train_size)
     else:
         X = train.drop(columns=["class", "nickname", "id"])
         y = train["class"]
-        X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, train_size=train_size)
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, random_state=42, train_size=train_size)
 
     return X_train, X_test, y_train, y_test

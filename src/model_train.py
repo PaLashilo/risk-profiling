@@ -2,21 +2,22 @@ from catboost import CatBoostClassifier
 from catboost import CatBoostRegressor
 from sklearn.model_selection import RandomizedSearchCV
 
-def model_training(X_train, y_train, param_grid, random_iter, with_deals = 0):
+
+def model_training(X_train, y_train, param_grid, random_iter, with_deals=0):
     # cat_columns = X_train.select_dtypes(include=['object']).columns
 
-    if with_deals: 
+    if with_deals:
         model = CatBoostRegressor(verbose=0, loss_function='RMSE')
         score = 'neg_mean_squared_error'
-    else: 
+    else:
         model = CatBoostClassifier(verbose=0, loss_function='MultiClass')
         score = 'f1_macro'
-    
-    grid_search = RandomizedSearchCV(estimator=model, 
-                                    param_distributions=param_grid, 
-                                    cv=5, 
-                                    scoring=score, 
-                                    n_iter=random_iter)
+
+    grid_search = RandomizedSearchCV(estimator=model,
+                                     param_distributions=param_grid,
+                                     cv=5,
+                                     scoring=score,
+                                     n_iter=random_iter)
 
     grid_search.fit(X_train, y_train)
 
