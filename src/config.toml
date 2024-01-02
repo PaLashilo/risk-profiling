@@ -12,7 +12,7 @@ normalization_parameter = 0.8  # relevant if use_flexible_normalization == 0
 make_dataset_of_deals = 1  # 0 - dataset of users, 1 - dataset of users deals
 
 [logging]
-api_key="5KHdGGECPvjMaU1x9uobLnGyb"
+api_key=""
 project_name="risk-profiling"
 workspace="pashinskaya03"
 
